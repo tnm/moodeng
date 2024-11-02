@@ -89,7 +89,7 @@ class Monitor:
             cap = cv2.VideoCapture(stream_url)
             
             print("👀 Connected! Watching for hippos...")
-            last_heartbeat = time.time()
+            check_count = 0
             
             while True:
                 ret, frame = cap.read()
@@ -98,29 +98,22 @@ class Monitor:
                     time.sleep(1)
                     continue
                 
-                # Print heartbeat every minute
-                current_time = time.time()
-                if current_time - last_heartbeat >= 60:  # 60 seconds
-                    print("🦛 Still watching for hippos...")
-                    last_heartbeat = current_time
-                
-                # Silence all output during inference
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore")
-                    with open(os.devnull, 'w') as devnull:
-                        old_stdout = sys.stdout
-                        sys.stdout = devnull
-                        try:
-                            results = self.model(frame, verbose=False)
-                        finally:
-                            sys.stdout = old_stdout
+                check_count += 1
+                if check_count % 10 == 0: # Print every 10th check
+                    print(f"\n🔍 Check #{check_count}: Looking for hippos...")
                 
                 # Process detections
                 current_time = time.time()
+                results = self.model(frame, verbose=False)
+                
                 for result in results:
                     for box in result.boxes:
                         class_id = int(box.cls[0])
                         confidence = float(box.conf[0])
+                        class_name = self.model.names[class_id]
+                        
+                        if check_count % 4 == 0:  # Debug output every fourth check
+                            print(f"   Found {class_name} (class {class_id}) with {confidence:.2%} confidence")
                         
                         if (class_id == self.hippo_class 
                             and confidence >= self.config["min_confidence"]
