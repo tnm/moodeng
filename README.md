@@ -15,7 +15,7 @@ Moo Deng appearances using state-of-the-art computer vision.
   - Console logging (default)
   - SMS notifications (via Twilio, could use more testing)
   - Push notifications (via Pushbullet, could use more testing)
-- ⚡ Fast and efficient monitoring
+  - Custom alerts 
 
 Check out notes below for more details and caveats.
 
@@ -23,15 +23,23 @@ Check out notes below for more details and caveats.
 ## 🚀 Quick Start
 
 ### Installation
+
+Install pipx if you haven't already
+
 ```bash
-# Install pipx if you haven't already
 brew install pipx
 pipx ensurepath
+```
 
-# Install moodeng directly from GitHub
+You can install `moodeng` directly from GitHub:
+
+```
 pipx install git+https://github.com/tnm/moodeng.git
+```
 
-# Or if you've cloned the repository:
+Or if you've cloned the repository:
+
+```
 git clone https://github.com/tnm/moodeng.git
 cd moodeng
 pipx install .
