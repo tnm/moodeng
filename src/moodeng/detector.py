@@ -89,6 +89,7 @@ class Monitor:
             cap = cv2.VideoCapture(stream_url)
             
             print("👀 Connected! Watching for hippos...")
+            print(f"🦛 Hippo is class {self.hippo_class} in model")
             check_count = 0
             
             while True:
@@ -99,8 +100,8 @@ class Monitor:
                     continue
                 
                 check_count += 1
-                if check_count % 10 == 0: # Print every 10th check
-                    print(f"\n🔍 Check #{check_count}: Looking for hippos...")
+                if check_count % 10 == 0:
+                    print(f"\n🔍 Check #{check_count}. Looking for hippos...")
                 
                 # Process detections
                 current_time = time.time()
@@ -112,9 +113,15 @@ class Monitor:
                         confidence = float(box.conf[0])
                         class_name = self.model.names[class_id]
                         
-                        if check_count % 10 == 0:  # Debug output every 10th check
-                            print(f"   Found {class_name} (class {class_id}) with {confidence:.2%} confidence")
+                        # Show any hippo detection above 20% confidence
+                        if class_id == self.hippo_class and confidence > 0.2:
+                            print(f"   🦛 Possible hippo! {confidence:.2%} confidence")
+                        # Show other animals only if high confidence
+                        elif 'animal' in class_name.lower() and confidence > 0.6:
+                            if check_count % 10 == 0:
+                                print(f"   Found {class_name} with {confidence:.2%} confidence")
                         
+                        # Alert on hippos with our configured confidence
                         if (class_id == self.hippo_class 
                             and confidence >= self.config["min_confidence"]
                             and current_time - self.last_alert_time > self.config["alert_cooldown"]):
