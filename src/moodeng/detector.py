@@ -89,7 +89,6 @@ class Monitor:
             cap = cv2.VideoCapture(stream_url)
             
             print("👀 Connected! Watching for hippos. (note: model trained on common hippos, not pygmy hippos.)")
-            print(f"🦛 Hippo is class {self.hippo_class} in model")
             check_count = 0
             
             while True:
@@ -114,8 +113,10 @@ class Monitor:
                         class_name = self.model.names[class_id]
                         
                         # Show any hippo detection above 10% confidence
+                        # and only show on every 10th check  
                         if class_id == self.hippo_class and confidence > 0.10:
-                            print(f"   🦛 Possible hippo! {confidence:.2%} confidence")
+                            if check_count % 4 == 0:
+                                print(f"   🦛 Possible hippo! {confidence:.2%} confidence")
                         # Show other animals only if high confidence
                         elif 'animal' in class_name.lower() and confidence > 0.6:
                             if check_count % 10 == 0:
