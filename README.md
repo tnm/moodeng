@@ -3,6 +3,9 @@
 Powerful CLI and Python library for monitoring YouTube live streams for 
 Moo Deng appearances using state-of-the-art computer vision. 
 
+![GbXCLDMbgAAGY9Y](https://github.com/user-attachments/assets/a7cf05ac-13dc-41da-ae1c-b29577a863e0)
+
+
 ## ✨ Features
 
 - 🔍 Real-time hippo detection using YOLOv8
