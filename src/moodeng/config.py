@@ -6,29 +6,27 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
     channel_id = channel_id.replace('@', '')
     
     try:
-        print(f"🔍 Looking for latest stream from @{channel_id}...")
+        print(f"🔍 Looking for live stream from @{channel_id}...")
         
         ydl_opts = {
             'quiet': True,
-            'extract_flat': True,
-            'force_generic_extractor': True,
             'no_warnings': True,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            # Get channel streams
             channel_url = f'https://www.youtube.com/@{channel_id}/live'
-            info = ydl.extract_info(channel_url, download=False)
-            
-            # Check specifically for "is_live" status
-            if info.get('live_status') == 'is_live':
-                print(f"✨ Found live stream: {info['title']}")
-                return f"https://www.youtube.com/watch?v={info['id']}"
-                    
-        print("❌ No active live streams found!")
-        return None
-        
+            try:
+                info = ydl.extract_info(channel_url, download=False)
+                if info and 'id' in info:
+                    video_url = f"https://www.youtube.com/watch?v={info['id']}"
+                    print(f"✨ Found live stream: {info.get('title', 'Untitled')}")
+                    return video_url
+            except:
+                print("❌ No live stream currently active")
+                return None
+                
     except Exception as e:
+        print(f"⚠️  Error checking stream: {e}")
         return None
 
 DEFAULT_CONFIG = {
