@@ -71,12 +71,7 @@ The first time you run `moodeng`, it will:
 
 * In any case, the model is not yet fine-tuned for Moo Deng, but pull requests are welcome and we can work together to improve it. Ideally, you could choose Jonah, Moo Deng, or both.
 
-* Detection numbers are may be lower than expected, since the model is trained on the common hippo (*Hippopotamus amphibius*, and not Moo Deng's species—the pygmy hippo (*Choeropsis liberiensis*). This will improve. Also, given this, detection alerts are set relatively low—so don't worry, you should still get Moo Deng alerts.
-
-### Update to latest version
-```bash
-pipx upgrade moodeng
-```
+* Detection numbers are may be lower than expected, since the model is trained on the common hippo (*Hippopotamus amphibius*), and not Moo Deng's species—the pygmy hippo (*Choeropsis liberiensis*). This will improve. Given this, detection alerts are set relatively low: so don't worry, you should still get Moo Deng alerts.
 
 ## 💫 More things you can do
 
@@ -102,7 +97,7 @@ moodeng --alert-type push --pushbullet-key "YOUR_KEY"
 
 ## 🐍 Python Usage
 
-The CLI is cool but you can also work with `moodeng` directly from Python. 
+The CLI is cool, but you can also work with `moodeng` directly from Python. 
 For example, you may want to integrate this library into another project, 
 (e.g, Enterprise SaaS app that monitors your customers' streams for pygmy hippos, etc etc.)
 
