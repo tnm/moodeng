@@ -16,7 +16,7 @@ def main():
                        help='Path to config file')
     parser.add_argument('--min-confidence', 
                        type=float,
-                       default=0.65,
+                       default=0.20,
                        help='Minimum confidence threshold for detection')
     parser.add_argument('--alert-cooldown', 
                        type=int,
