@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings
+*.sublime-workspace
+*.sublime-project
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Testing
+.coverage
+.tox/
+.pytest_cache/
+htmlcov/
+
+# Build and Distribution
+*.manifest
+*.spec
+.Python
+*.so
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# moodeng specific
+*.yaml
+!example.yaml
+!.pre-commit-config.yaml
+local_config/
+cache/
+models/
+runs/
+outputs/
+
+# pytorch/YOLOv5
+*.pt
+torch_tmp/
+weights/
+*.onnx
+
+# Temporary files
+tmp/
+temp/
