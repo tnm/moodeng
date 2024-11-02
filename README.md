@@ -17,6 +17,10 @@ Moo Deng appearances using state-of-the-art computer vision.
   - Push notifications (via Pushbullet, could use more testing)
 - ⚡ Fast and efficient monitoring
 
+Detection numbers are may be lower than expected, since the model is trained on the common hippo (Hippopotamus amphibius),
+and not Moo Deng's species—the pygmy hippo (Choeropsis liberiensis). This will improve. Also, given this,
+detection alerts are set relatively low—so don't worry, you should still get Moo Deng alerts.
+
 
 ## 🚀 Quick Start
 
