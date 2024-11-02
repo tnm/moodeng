@@ -19,7 +19,6 @@ Moo Deng appearances using state-of-the-art computer vision.
 
 Check out notes below for more details and caveats.
 
-
 ## 🚀 Quick Start
 
 ### Installation
@@ -181,7 +180,7 @@ You can use a YAML config file for persistent settings:
 # config.yaml
 youtube_url: "YOUR_YOUTUBE_URL"  # Optional: defaults to Moo Deng's stream
 alert_type: "push"  # log, sms, or push
-min_confidence: 0.65
+min_confidence: 0.20
 alert_cooldown: 300  # seconds between alerts
 
 # Optional: for SMS alerts

@@ -23,7 +23,7 @@ class Monitor:
         self,
         alerter: Optional[Alerter] = None,
         youtube_url: Optional[str] = None,
-        min_confidence: float = 0.65,
+        min_confidence: float = 0.10,
         alert_cooldown: int = 300
     ):
         print("🎥 Loading detector...")
@@ -113,8 +113,8 @@ class Monitor:
                         confidence = float(box.conf[0])
                         class_name = self.model.names[class_id]
                         
-                        # Show any hippo detection above 20% confidence
-                        if class_id == self.hippo_class and confidence > 0.2:
+                        # Show any hippo detection above 10% confidence
+                        if class_id == self.hippo_class and confidence > 0.10:
                             print(f"   🦛 Possible hippo! {confidence:.2%} confidence")
                         # Show other animals only if high confidence
                         elif 'animal' in class_name.lower() and confidence > 0.6:

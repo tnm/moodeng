@@ -30,8 +30,8 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
         return None
 
 DEFAULT_CONFIG = {
-    "youtube_url": get_latest_stream_url(),  # Get latest Moo Deng stream
-    "min_confidence": 0.65,
+    "youtube_url": None,
+    "min_confidence": 0.10,
     "alert_cooldown": 300,
 }
 
@@ -41,4 +41,9 @@ def get_config(custom_config: Dict[str, Any] = None) -> Dict[str, Any]:
     if custom_config:
         # Only update if we have non-None values
         config.update({k: v for k, v in custom_config.items() if v is not None})
+    
+    # If no URL provided, get the latest
+    if not config.get("youtube_url"):
+        config["youtube_url"] = get_latest_stream_url()
+        
     return config
