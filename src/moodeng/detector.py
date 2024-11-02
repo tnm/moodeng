@@ -112,7 +112,7 @@ class Monitor:
                         confidence = float(box.conf[0])
                         class_name = self.model.names[class_id]
                         
-                        if check_count % 4 == 0:  # Debug output every fourth check
+                        if check_count % 10 == 0:  # Debug output every 10th check
                             print(f"   Found {class_name} (class {class_id}) with {confidence:.2%} confidence")
                         
                         if (class_id == self.hippo_class 
