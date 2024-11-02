@@ -55,21 +55,15 @@ The first time you run `moodeng`, it will:
 
 ## 📓 Important Notes
 
-The live stream from Moo Deng's YouTube channel is *usually* online, 
-but it could be offline. If it's offline, you'll get an error, and
-can try again later.
+* The live stream from Moo Deng's YouTube channel is *usually* online, but it could be offline. If it's offline, you'll get an error, and can try again later.
 
-The Moo Deng ML model detection is basic for now, so you may get alerts when Jonah (i.e.,
-Moo Deng's mother) appears. She is noticeably larger than Moo Deng, as she is an adult.
-Sometimes the stream features only Jonah, sometimes it's both Jonah and Moo Deng. 
+* The Moo Deng ML model detection is basic for now, so you may get alerts when Jonah (i.e., Moo Deng's mother) appears. She is noticeably larger than Moo Deng, as she is an adult. Sometimes the stream features only Jonah, sometimes it's both Jonah and Moo Deng. 
 
-Potentially you might only see Moo Deng, but that is uncommon since she is a baby.
-In any case, the model is not yet fine-tuned for Moo Deng, but pull requests are welcome
-and we can work together to improve it. Ideally, you could choose Jonah, Moo Deng, or both.
+* Potentially you might only see Moo Deng, but that is uncommon since she is a baby.
 
-Detection numbers are may be lower than expected, since the model is trained on the common hippo (*Hippopotamus amphibius*,
-and not Moo Deng's species—the pygmy hippo (*Choeropsis liberiensis*). This will improve. Also, given this,
-detection alerts are set relatively low—so don't worry, you should still get Moo Deng alerts.
+* In any case, the model is not yet fine-tuned for Moo Deng, but pull requests are welcome and we can work together to improve it. Ideally, you could choose Jonah, Moo Deng, or both.
+
+* Detection numbers are may be lower than expected, since the model is trained on the common hippo (*Hippopotamus amphibius*, and not Moo Deng's species—the pygmy hippo (*Choeropsis liberiensis*). This will improve. Also, given this, detection alerts are set relatively low—so don't worry, you should still get Moo Deng alerts.
 
 ### Update to latest version
 ```bash
