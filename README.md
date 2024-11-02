@@ -3,7 +3,7 @@
 Powerful CLI and Python library for monitoring YouTube live streams for 
 Moo Deng appearances using state-of-the-art computer vision. 
 
-![GbXCLDMbgAAGY9Y](https://github.com/user-attachments/assets/a7cf05ac-13dc-41da-ae1c-b29577a863e0)
+<img width="1048" alt="image" src="https://github.com/user-attachments/assets/1c946d3b-7955-4ae4-a158-9df329e702db">
 
 
 ## ✨ Features
