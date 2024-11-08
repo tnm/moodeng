@@ -3,6 +3,8 @@
 Powerful CLI and Python library for monitoring YouTube live streams for 
 Moo Deng appearances using state-of-the-art computer vision. 
 
+Also known as: `moodengtifier`, feel free to alias that.
+
 <img width="1048" alt="image" src="https://github.com/user-attachments/assets/1c946d3b-7955-4ae4-a158-9df329e702db">
 
 
