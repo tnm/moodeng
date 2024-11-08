@@ -95,7 +95,7 @@ class Monitor:
                 ret, frame = cap.read()
                 if not ret:
                     print("📺 Failed to grab frame, retrying...")
-                    time.sleep(1)
+                    time.sleep(60)
                     continue
                 
                 check_count += 1
