@@ -88,7 +88,8 @@ class Monitor:
             stream_url = self._get_stream_url(self.config['youtube_url'])
             cap = cv2.VideoCapture(stream_url)
             
-            print("👀 Connected! Watching for hippos. (note: model trained on common hippos, not pygmy hippos.)")
+            print("👀 Connected! Watching for hippos on {self.config['youtube_url']}")
+            print("🦛 Note: model trained on common hippos, not pygmy hippos.)")
             check_count = 0
             
             while True:
