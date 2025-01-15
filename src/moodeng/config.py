@@ -11,6 +11,7 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
+            'extract_flat': True,  # Don't download video info yet
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -18,9 +19,14 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
             try:
                 info = ydl.extract_info(channel_url, download=False)
                 if info and 'id' in info:
-                    video_url = f"https://www.youtube.com/watch?v={info['id']}"
-                    print(f"✨ Found live stream: {info.get('title', 'Untitled')}")
-                    return video_url
+                    # Check if stream is actually live
+                    if info.get('is_live', False):
+                        video_url = f"https://www.youtube.com/watch?v={info['id']}"
+                        print(f"✨ Found live stream: {info.get('title', 'Untitled')}")
+                        return video_url
+                    else:
+                        print("❌ Stream exists but is not currently live")
+                        return None
             except:
                 print("❌ No live stream currently active")
                 return None

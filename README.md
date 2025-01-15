@@ -3,10 +3,7 @@
 Powerful CLI and Python library for monitoring YouTube live streams for 
 Moo Deng appearances using state-of-the-art computer vision. 
 
-Also known as: `moodengtifier`, feel free to alias that.
-
 <img width="1048" alt="image" src="https://github.com/user-attachments/assets/1c946d3b-7955-4ae4-a158-9df329e702db">
-
 
 ## ✨ Features
 
@@ -15,74 +12,54 @@ Also known as: `moodengtifier`, feel free to alias that.
 - 🌙 Probably works in both day and night conditions
 - 📱 Multiple alert types:
   - Console logging (default)
-  - SMS notifications (via Twilio, could use more testing)
-  - Push notifications (via Pushbullet, could use more testing)
+  - SMS notifications (via Twilio)
+  - Push notifications (via Pushbullet)
   - Custom alerts 
-
-Check out notes below for more details and caveats.
 
 ## 🚀 Quick Start
 
+### Requirements
+
+- Python 3.12 (required for PyTorch compatibility)
+- macOS, Linux, or WSL
+
 ### Installation
 
-Install pipx if you haven't already
-
 ```bash
-brew install pipx
-pipx ensurepath
-```
+# 1. Get Python 3.12 if needed
+brew install pyenv
+pyenv install 3.12
+pyenv global 3.12
 
-You can install `moodeng` directly from GitHub:
-
-```
-pipx install git+https://github.com/tnm/moodeng.git
-```
-
-Or if you've cloned the repository:
-
-```
+# 2. Clone and install
 git clone https://github.com/tnm/moodeng.git
 cd moodeng
-pipx install .
+chmod +x install.sh
+./install.sh
+
+# 3. Activate environment
+source .venv/bin/activate
 ```
 
 ### Run
 
-The easiest way to start monitoring is just to use the CLI:
-
+Start watching for hippos:
 ```bash
 moodeng
 ```
 
-It may take a minute to setup the first time you run it. But Moo Deng is worth it.
+That's it! First run will download the ML model and start monitoring.
 
-The first time you run `moodeng`, it will:
-1. Set up the required environment
-2. Download the model
-3. Connect to the stream
-4. Start watching for Moo Deng
+## 🛠️ Configuration
 
-## 📓 Important Notes
+### Alert Types
 
-* The live stream from Moo Deng's YouTube channel is *usually* online, but it could be offline. If it's offline, you'll get an error, and can try again later.
-
-* The Moo Deng ML model detection is basic for now, so you may get alerts when Jonah (i.e., Moo Deng's mother) appears. She is noticeably larger than Moo Deng, as she is an adult. Sometimes the stream features only Jonah, sometimes it's both Jonah and Moo Deng. 
-
-* Potentially you might only see Moo Deng, but that is uncommon since she is a baby.
-
-* In any case, the model is not yet fine-tuned for Moo Deng, but pull requests are welcome and we can work together to improve it. Ideally, you could choose Jonah, Moo Deng, or both.
-
-* Detection numbers may be lower than expected, since the model is trained on the common hippo (*Hippopotamus amphibius*), and not Moo Deng's species—the pygmy hippo (*Choeropsis liberiensis*). This will improve. Given this, detection alerts are set relatively low: so don't worry, you should still get Moo Deng alerts.
-
-## 💫 More things you can do
-
-Explicitly specify a different stream in case the default one goes offline
-or you want to try with your own stream:
+Console logging (default):
 ```bash
-moodeng --url "YOUR_YOUTUBE_URL"
+moodeng
 ```
 
-Get SMS notifications (requires Twilio account):
+SMS alerts (requires Twilio):
 ```bash
 moodeng --alert-type sms \
   --twilio-sid "YOUR_SID" \
@@ -91,199 +68,39 @@ moodeng --alert-type sms \
   --twilio-to "+1234567890"
 ```
 
-Get push notifications (requires Pushbullet account):
+Push notifications (requires Pushbullet):
 ```bash
 moodeng --alert-type push --pushbullet-key "YOUR_KEY"
 ```
 
-## 🐍 Python Usage
+### Options
 
-The CLI is cool, but you can also work with `moodeng` directly from Python. 
-You may want to integrate this library into another project, e.g, Enterprise SaaS app that monitors your 
-customers' streams for pygmy hippos, etc etc.
-
-```python
-from moodeng import monitor, LogAlerter
-
-# Basic usage (defaults to Moo Deng's stream)
-m = monitor(alerter=LogAlerter())
-m.start()
-
-# Or customize everything
-m = monitor(
-    youtube_url="YOUR_YOUTUBE_URL",
-    min_confidence=0.7,
-    alert_cooldown=300 # seconds between alerts
-)
-m.start()
-```
-
-### Different Alert Types
-
-```python
-# SMS Alerts
-from moodeng import monitor, SMSAlerter
-
-m = monitor(
-    alerter=SMSAlerter(
-        account_sid="YOUR_SID",
-        auth_token="YOUR_TOKEN",
-        from_number="+1234567890",
-        to_number="+1234567890"
-    )
-)
-m.start()
-
-# Push Notifications
-from moodeng import monitor, PushAlerter
-
-m = monitor(
-    alerter=PushAlerter(api_key="YOUR_PUSHBULLET_KEY")
-)
-m.start()
-```
-
-### Custom Alert Handler
-
-```python
-from moodeng import Alerter, monitor
-
-class MyCustomAlerter(Alerter):
-    def send_alert(self, message: str):
-        # Do something with the alert
-        print(f"Custom alert: {message}")
-
-m = monitor(alerter=MyCustomAlerter())
-m.start()
-```
-
-### Advanced Configuration
-
-```python
-from moodeng import monitor, LogAlerter
-
-# All options
-m = monitor(
-    youtube_url="YOUR_YOUTUBE_URL",  # Optional: defaults to latest Moo Deng stream
-    alerter=LogAlerter(),            # Optional: defaults to console logging
-    min_confidence=0.7,              # Optional: detection sensitivity (0-1)
-    alert_cooldown=300               # Optional: seconds between alerts
-)
-
-# Start monitoring
-m.start()
-```
-
-## 📝 Configuration
-
-You can use a YAML config file for persistent settings:
-
-```yaml
-# config.yaml
-youtube_url: "YOUR_YOUTUBE_URL"  # Optional: defaults to Moo Deng's stream
-alert_type: "push"  # log, sms, or push
-min_confidence: 0.20
-alert_cooldown: 300  # seconds between alerts
-
-# Optional: for SMS alerts
-twilio:
-  account_sid: "YOUR_SID"
-  auth_token: "YOUR_TOKEN"
-  from_number: "+1234567890"
-  to_number: "+1234567890"
-
-# Optional: for push notifications
-pushbullet:
-  api_key: "YOUR_KEY"
-```
-
-Then run:
 ```bash
-moodeng --config config.yaml
-```
+# Custom stream URL
+moodeng --url "YOUR_YOUTUBE_URL"
 
-## 🛠️ Advanced Usage from CLI
-
-### Debug Mode
-If something's not working:
-```bash
-moodeng --debug
-```
-
-### Detection Settings
-Adjust how sensitive the hippo detection is:
-```bash
-# More selective detection
+# Adjust detection sensitivity
 moodeng --min-confidence 0.8
 
-# Change how often you get alerts
+# Change alert frequency
 moodeng --alert-cooldown 600  # 10 minutes
-```
 
-### Custom Alerters
-Create your own alert system:
-
-```python
-from moodeng import Alerter, monitor
-
-class DiscordAlerter(Alerter):
-    def __init__(self, webhook_url):
-        self.webhook_url = webhook_url
-
-    def send_alert(self, message: str):
-        # Send to Discord
-        pass
-
-# Use it
-m = monitor(alerter=DiscordAlerter("webhook_url"))
-m.start()
-```
-
-## 🔧 Troubleshooting
-
-Common issues and solutions:
-
-### Installation Issues
-```bash
-# Force a fresh installation
-pipx uninstall moodeng
-pipx install git+https://github.com/tnm/moodeng.git
-```
-
-### Runtime Issues
-```bash
-# Run in debug mode
+# Debug mode
 moodeng --debug
-
-# If you see dependency errors
-pipx install --force moodeng
 ```
 
-## 🤝 Contributing
+## 📝 Notes
 
-Please do! Here's how:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Make your changes
-4. Run tests (`pytest`)
-5. Commit (`git commit -m 'Add AmazingFeature'`)
-6. Push (`git push origin feature/AmazingFeature`)
-7. Open a Pull Request
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
+* The live stream is usually online but could be offline. If offline, try again later.
+* Detection works for both Moo Deng (baby) and Jonah (mother).
+* Model trained on common hippos, so detection threshold is set low for pygmy hippos.
 
 ## 🆘 Support
 
-Need help?
-1. Check the troubleshooting guide above
-2. Run with `--debug` for more information
-3. [Open an issue](https://github.com/tnm/moodeng/issues)
+1. Run with `--debug` for more information
+2. [Open an issue](https://github.com/tnm/moodeng/issues)
+3. Email ted@cased.com
 
-## 🔒 Security
+## 📄 License
 
-Found a security issue? I would be incredibly impressed, and will try to send you a
-hippo figurine as a thank you. Email me at ted@cased.com.
+MIT License. See `LICENSE` for details.

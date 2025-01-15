@@ -45,11 +45,7 @@ class Monitor:
         """Load and optimize model for detection"""
         print("🦛 Loading Moo Deng detection model...")
         try:
-            # First ensure we have ultralytics up to date
-            print("🔄 Updating ultralytics...")
-            subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "ultralytics"], check=True)
-            
-            print("🔄 Downloading OpenImages model...")
+            print("🔄 Loading OpenImages model...")
             model = YOLO('yolov8x-oiv7.pt')  # OpenImages V7 model
             
             print("\n🔍 Confirming that hippos are in the model...")
@@ -70,7 +66,7 @@ class Monitor:
     def _get_stream_url(self, youtube_url: str) -> str:
         """Get direct stream URL using yt-dlp"""
         ydl_opts = {
-            'format': 'best[ext=mp4]',
+            'format': 'best',
             'quiet': True,
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -78,6 +74,8 @@ class Monitor:
                 info = ydl.extract_info(youtube_url, download=False)
                 return info['url']
             except Exception as e:
+                print(f"\n❌ Stream error: {str(e)}")
+                print("💡 Tip: The stream might be offline. Try again later.")
                 raise RuntimeError(f"Failed to get stream URL: {str(e)}")
 
     def start(self):

@@ -20,71 +20,24 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environments
+# Virtual Environment
 .env
 .venv
 env/
 venv/
 ENV/
-env.bak/
-venv.bak/
+
+# ML Models
+*.pt
+yolov8*.pt
+ultralytics/
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.project
-.pydevproject
-.settings
-*.sublime-workspace
-*.sublime-project
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Testing
-.coverage
-.tox/
-.pytest_cache/
-htmlcov/
-
-# Build and Distribution
-*.manifest
-*.spec
-.Python
-*.so
-
-# Logs and databases
-*.log
-*.sqlite
-*.db
-
-# OS generated files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-
-# moodeng specific
-*.yaml
-!example.yaml
-!.pre-commit-config.yaml
-local_config/
-cache/
-models/
-runs/
-outputs/
-
-# pytorch/YOLOv5
-*.pt
-torch_tmp/
-weights/
-*.onnx
-
-# Temporary files
-tmp/
-temp/

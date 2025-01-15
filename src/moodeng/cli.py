@@ -2,6 +2,9 @@ import sys
 import os
 import subprocess
 import argparse
+import warnings
+
+warnings.filterwarnings("ignore", category=SyntaxWarning)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -65,7 +68,11 @@ def main():
     # Get the stream URL either from args or by finding latest
     stream_url = args.url or get_latest_stream_url()
     if not stream_url:
-        print("\n❌ No live stream available. Try again later or specify a URL with --url")
+        print("\n❌ No live stream available right now.")
+        print("💡 Tips:")
+        print("   1. The stream might be offline - try again later")
+        print("   2. Or specify a different URL with --url")
+        print("   3. Check https://www.youtube.com/@ZoodioThailand/live")
         return 0
     
     print(f"🎥 Found stream: {stream_url}")
@@ -74,7 +81,6 @@ def main():
     try:
         print("🔍 Checking dependencies...")
         # Import the heavy packages after initial message
-        import torch
         import cv2
         import pafy
         import pandas
@@ -91,8 +97,7 @@ def main():
         print(f"📦 Installing required packages (this might take a minute)...")
         try:
             subprocess.check_call([
-                sys.executable, "-m", "pip", 
-                "install", 
+                "uv", "pip", "install",
                 "torch", "opencv-python", "pafy", "youtube-dl",
                 "pandas", "numpy", "pyyaml", "matplotlib",
                 "seaborn", "tqdm", "psutil", "scipy", "ultralytics",
