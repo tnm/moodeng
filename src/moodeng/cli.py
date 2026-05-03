@@ -8,19 +8,33 @@ warnings.filterwarnings("ignore", category=SyntaxWarning)
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Monitor streams for pygmy hippos (หมูเด็ง)',
+        description='Monitor live streams for animal detections',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     
     # Basic configuration
     parser.add_argument('--url', 
-                       help='YouTube stream URL (defaults to Moo Deng stream)')
+                       help='Live page or stream URL (defaults to Moo Deng stream)')
     parser.add_argument('--config', 
                        help='Path to config file')
     parser.add_argument('--min-confidence', 
                        type=float,
                        default=0.20,
                        help='Minimum confidence threshold for detection')
+    parser.add_argument('--target-label',
+                       default=None,
+                       help='OpenImages class to detect (for example: hippopotamus, "Sea lion")')
+    parser.add_argument('--reference-name',
+                       default=None,
+                       help='Friendly name for reference-image matching, e.g. "Chonkers"')
+    parser.add_argument('--reference-image',
+                       action='append',
+                       default=None,
+                       help='Path to a reference image for the specific animal you want to match; repeat this flag to add more images')
+    parser.add_argument('--reference-threshold',
+                       type=float,
+                       default=None,
+                       help='Minimum reference match score for alerting when using --reference-image')
     parser.add_argument('--alert-cooldown', 
                        type=int,
                        default=300,
@@ -75,7 +89,7 @@ def main():
         print("   3. Check https://www.youtube.com/@ZoodioThailand/live")
         return 0
     
-    print(f"🎥 Found stream: {stream_url}")
+    print(f"🎥 Found source: {stream_url}")
     print("🦛 Welcome to moodeng! Setting things up...")
     
     try:
@@ -159,12 +173,20 @@ def main():
     
     # Create monitor with merged configuration
     monitor_config = {
-        'youtube_url': stream_url  # Use the URL we already found
+        'youtube_url': stream_url,  # Use the URL we already found
     }
     
     if config:
         monitor_config.update(config)
-    
+
+    if args.target_label is not None:
+        monitor_config['target_label'] = args.target_label
+    if args.reference_name is not None:
+        monitor_config['reference_name'] = args.reference_name
+    if args.reference_image is not None:
+        monitor_config['reference_images'] = args.reference_image
+    if args.reference_threshold is not None:
+        monitor_config['reference_match_threshold'] = args.reference_threshold
     if args.min_confidence is not None:
         monitor_config['min_confidence'] = args.min_confidence
     if args.alert_cooldown is not None:
@@ -177,14 +199,14 @@ def main():
         print("🐛 Debug mode enabled")
     
     # Create and start monitor
-    print("🔧 Setting up hippo detector...")
+    print("🔧 Setting up detector...")
     monitor = Monitor(
         alerter=alerter,
         **monitor_config
     )
     
     try:
-        print("👀 Watching for pygmy hippos (Press Ctrl+C to stop)...")
+        print("👀 Watching the configured live source (Press Ctrl+C to stop)...")
         monitor.start()
     except KeyboardInterrupt:
         print("\n👋 Stopping hippo monitor...")
