@@ -1,7 +1,7 @@
 [project]
 name = "moodeng"
 version = "0.1.0"
-description = "🦛 Monitor for moo deng the hippo in her youtube stream"
+description = "Monitor live animal streams with YOLOv8-based detection"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 authors = [

@@ -34,4 +34,4 @@ class PushAlerter(Alerter):
         self.pb = Pushbullet(api_key)
 
     def send_alert(self, message: str) -> None:
-        self.pb.push_note("Moo Deng Alert! 🦛", message)
+        self.pb.push_note("moodeng alert", message)

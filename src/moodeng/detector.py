@@ -186,11 +186,12 @@ class HDRelayLiveFrameSource:
 
 class Monitor:
     """
-    Moo Deng monitor for hippo detection
+    Monitor live streams for detections from a configured target class.
     """
     def __init__(
         self,
         alerter: Optional[Alerter] = None,
+        source_url: Optional[str] = None,
         youtube_url: Optional[str] = None,
         target_label: str = "hippopotamus",
         reference_name: Optional[str] = None,
@@ -200,8 +201,9 @@ class Monitor:
         alert_cooldown: int = 300
     ):
         print("🎥 Loading detector...")
-        
+
         self.config = get_config({
+            "source_url": source_url,
             "youtube_url": youtube_url,
             "target_label": target_label,
             "reference_name": reference_name,
@@ -210,32 +212,32 @@ class Monitor:
             "min_confidence": min_confidence,
             "alert_cooldown": alert_cooldown
         })
-        
-        if not self.config.get("youtube_url"):
+
+        if not self.config.get("source_url"):
             raise ValueError("No source URL provided! This shouldn't happen - please report this bug on GitHub.")
-        
+
         self.alerter = alerter or LogAlerter()
         self.model = self._load_model()
         self.reference_matcher = self._load_reference_matcher()
         self.last_alert_time = 0
-        
+
     def _load_model(self):
         """Load and optimize model for detection"""
-        print("🦛 Loading Moo Deng detection model...")
+        print("Loading detection model...")
         try:
-            print("🔄 Loading OpenImages model...")
+            print("Loading OpenImages model...")
             model = YOLO('yolov8x-oiv7.pt')  # OpenImages V7 model
-            
+
             requested_label = self.config["target_label"]
             print(f"\n🔍 Confirming that {requested_label} is in the model...")
             self.target_class, self.target_model_label = self._find_target_class(
                 model,
                 requested_label,
             )
-            
+
             print(f"✨ Found {self.target_model_label} detection (class {self.target_class})")
             return model
-            
+
         except ModelError:
             raise
         except Exception as e:
@@ -274,7 +276,7 @@ class Monitor:
             f"Couldn't find a model class for '{requested_label}'.{suggestion_text}"
         )
 
-    def _get_stream_url(self, youtube_url: str) -> str:
+    def _get_stream_url(self, source_url: str) -> str:
         """Resolve a direct media URL from a supported page URL using yt-dlp."""
         ydl_opts = {
             'format': 'best',
@@ -282,7 +284,7 @@ class Monitor:
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             try:
-                info = ydl.extract_info(youtube_url, download=False)
+                info = ydl.extract_info(source_url, download=False)
                 return info['url']
             except Exception as e:
                 print(f"\n❌ Stream error: {str(e)}")
@@ -428,7 +430,7 @@ class Monitor:
         """Monitor a direct video stream via OpenCV."""
         cap = cv2.VideoCapture(stream_url)
         try:
-            print(f"👀 Connected! Watching for {target_label} on {self.config['youtube_url']}")
+            print(f"👀 Connected! Watching for {target_label} on {self.config['source_url']}")
             if self.reference_matcher:
                 print(f"🧭 Reference matching is enabled for {subject_name}")
 
@@ -479,12 +481,12 @@ class Monitor:
 
     def start(self):
         """Start monitoring the stream"""
-        print(f"\n📡 Connecting to stream: {self.config['youtube_url']}")
+        print(f"\n📡 Connecting to stream: {self.config['source_url']}")
         target_label = self.target_model_label.title()
         subject_name = self.config.get("reference_name") or target_label
 
         try:
-            source = self._resolve_source(self.config["youtube_url"])
+            source = self._resolve_source(self.config["source_url"])
             if source["kind"] == "hdrelay_frames":
                 self._monitor_hdrelay_frames(source, target_label, subject_name)
             else:

@@ -1,5 +1,5 @@
 """
-Moodeng - Monitor for detecting pygmy hippos
+Moodeng - Monitor live streams for animal detections.
 """
 
 from .detector import Monitor

@@ -28,8 +28,8 @@ specific sea lion such as Chonkers on the PIER 39 feed.
   `Sea lion` exists, but species-level labels such as `Steller sea lion` do not.
 - Individual-animal matching is heuristic. It depends heavily on camera angle,
   lighting, occlusion, and the quality of the reference images.
-- This repository does not currently include a real automated test suite.
-  Validation is mostly compile checks and smoke tests.
+- Automated coverage is still minimal. There are basic helper/config tests, but
+  validation is still mostly compile checks and smoke tests.
 
 ## Requirements
 
@@ -100,6 +100,9 @@ moodeng \
 The best reference images are cropped or nearly cropped views of the same
 animal from the same camera, with stable lighting and pose.
 
+The `./refs/chonkers-*.jpg` paths above are examples only. This repository does
+not ship Chonkers reference images.
+
 ## CLI Options
 
 Common options:
@@ -168,7 +171,7 @@ Basic example:
 from moodeng import Monitor
 
 monitor = Monitor(
-    youtube_url="https://www.pier39.com/sealions/",
+    source_url="https://www.pier39.com/sealions/",
     target_label="Sea lion",
     min_confidence=0.2,
     alert_cooldown=300,
@@ -182,7 +185,7 @@ Reference matching:
 from moodeng import Monitor
 
 monitor = Monitor(
-    youtube_url="https://www.pier39.com/sealions/",
+    source_url="https://www.pier39.com/sealions/",
     target_label="Sea lion",
     reference_name="Chonkers",
     reference_images=[
@@ -207,7 +210,7 @@ class MyAlerter(Alerter):
 
 monitor = Monitor(
     alerter=MyAlerter(),
-    youtube_url="https://www.pier39.com/sealions/",
+    source_url="https://www.pier39.com/sealions/",
     target_label="Sea lion",
 )
 monitor.start()
@@ -217,8 +220,6 @@ monitor.start()
 
 - The package name is still `moodeng`, even though the current behavior is no
   longer specific to Moo Deng.
-- Several user-facing strings in the code still use older hippo-oriented text.
-  The README now documents the behavior more accurately than the CLI output.
 - The repository currently depends on heavyweight vision packages and model
   downloads, so startup can be slow on a fresh environment.
 
@@ -227,6 +228,7 @@ monitor.start()
 Recent manual checks for the current branch:
 
 - `python3 -m compileall src/moodeng`
+- `PYTHONPATH=src .venv/bin/python -m unittest discover -s tests`
 - `git diff --check`
 - Pier 39 live-source smoke test:
   resolved `https://www.pier39.com/sealions/` to camera `CID_UROS0000008D`
