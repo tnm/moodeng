@@ -1,6 +1,7 @@
 from typing import Any, Dict
 import yt_dlp
 
+
 def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
     """Get the latest stream URL from a YouTube channel"""
     channel_id = channel_id.replace('@', '')
@@ -36,7 +37,7 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
         return None
 
 DEFAULT_CONFIG = {
-    "youtube_url": None,
+    "source_url": None,
     "target_label": "hippopotamus",
     "reference_name": None,
     "reference_images": None,
@@ -49,11 +50,19 @@ def get_config(custom_config: Dict[str, Any] = None) -> Dict[str, Any]:
     """Get configuration with custom overrides"""
     config = DEFAULT_CONFIG.copy()
     if custom_config:
+        if (
+            custom_config.get("source_url") is None
+            and custom_config.get("youtube_url") is not None
+        ):
+            custom_config = {
+                **custom_config,
+                "source_url": custom_config["youtube_url"],
+            }
         # Only update if we have non-None values
         config.update({k: v for k, v in custom_config.items() if v is not None})
-    
+
     # If no URL provided, get the latest
-    if not config.get("youtube_url"):
-        config["youtube_url"] = get_latest_stream_url()
-        
+    if not config.get("source_url"):
+        config["source_url"] = get_latest_stream_url()
+
     return config

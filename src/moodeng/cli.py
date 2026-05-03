@@ -6,6 +6,7 @@ import warnings
 
 warnings.filterwarnings("ignore", category=SyntaxWarning)
 
+
 def main():
     parser = argparse.ArgumentParser(
         description='Monitor live streams for animal detections',
@@ -14,7 +15,7 @@ def main():
     
     # Basic configuration
     parser.add_argument('--url', 
-                       help='Live page or stream URL (defaults to Moo Deng stream)')
+                       help='Live page or stream URL (defaults to the latest configured stream)')
     parser.add_argument('--config', 
                        help='Path to config file')
     parser.add_argument('--min-confidence', 
@@ -90,7 +91,7 @@ def main():
         return 0
     
     print(f"🎥 Found source: {stream_url}")
-    print("🦛 Welcome to moodeng! Setting things up...")
+    print("Setting up moodeng...")
     
     try:
         print("🔍 Checking dependencies...")
@@ -117,7 +118,7 @@ def main():
                 "seaborn", "tqdm", "psutil", "scipy", "ultralytics",
                 "gitpython"
             ])
-            print("✨ Dependencies installed! Restarting moodeng...")
+            print("Dependencies installed. Restarting moodeng...")
             os.execl(sys.executable, sys.executable, *sys.argv)
         except Exception as e:
             print(f"❌ Error installing dependencies: {e}")
@@ -173,7 +174,7 @@ def main():
     
     # Create monitor with merged configuration
     monitor_config = {
-        'youtube_url': stream_url,  # Use the URL we already found
+        'source_url': stream_url,  # Use the URL we already found
     }
     
     if config:
@@ -196,7 +197,7 @@ def main():
     if args.debug:
         import logging
         logging.basicConfig(level=logging.DEBUG)
-        print("🐛 Debug mode enabled")
+        print("Debug mode enabled")
     
     # Create and start monitor
     print("🔧 Setting up detector...")
@@ -209,7 +210,7 @@ def main():
         print("👀 Watching the configured live source (Press Ctrl+C to stop)...")
         monitor.start()
     except KeyboardInterrupt:
-        print("\n👋 Stopping hippo monitor...")
+        print("\nStopping monitor...")
     except ConfigurationError as e:
         print(f"⚠️  Configuration error: {e}")
         if args.debug:
