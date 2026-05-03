@@ -37,6 +37,10 @@ def get_latest_stream_url(channel_id: str = "ZoodioThailand") -> str:
 
 DEFAULT_CONFIG = {
     "youtube_url": None,
+    "target_label": "hippopotamus",
+    "reference_name": None,
+    "reference_images": None,
+    "reference_match_threshold": 0.08,
     "min_confidence": 0.10,
     "alert_cooldown": 300,
 }
